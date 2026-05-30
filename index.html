@@ -541,9 +541,42 @@
     }
 
     /* ── RESPONSIVE ───────────────────────────────────────────────── */
+
+    /* Tablet / large mobile */
     @media (max-width: 800px) {
       nav { padding: 20px 24px; }
       .nav-links { display: none; }
+
+      /* Vertically center text + image as a group */
+      .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-top: 68px;    /* reserve nav height */
+        padding-bottom: 120px; /* offset center upward */
+      }
+      .hero-top-text { padding-top: 0; }
+      .hero-img-wrap {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        width: 92vw;
+        margin-top: -12px; /* slight overlap like desktop */
+      }
+
+      /* Caps: pin to bottom corners of the hero */
+      .hero-cap {
+        top: auto;
+        bottom: 64px;
+        font-size: 9px;
+        max-width: 140px;
+        letter-spacing: .08em;
+        line-height: 1.7;
+      }
+      .hero-cap--left  { left: 24px;  text-align: left; }
+      .hero-cap--right { right: 24px; text-align: right; }
 
       .intro-section,
       .design-section,
@@ -553,12 +586,39 @@
       .cta-section { padding: 80px 24px; }
 
       .intro-grid,
-      .app-grid { grid-template-columns: 1fr; gap: 44px; }
+      .app-grid { grid-template-columns: 1fr; gap: 40px; }
 
       .layers { grid-template-columns: 1fr; }
       .stats-row { grid-template-columns: 1fr; }
 
+      .layer { padding: 36px 28px; }
+      .meal-card { padding: 36px 28px; }
+
       footer { padding: 28px 24px; flex-direction: column; gap: 14px; text-align: center; }
+    }
+
+    /* Small phone */
+    @media (max-width: 440px) {
+      .hero-img-wrap { width: 96vw; }
+
+      .intro-section,
+      .design-section,
+      .app-section,
+      .story-section,
+      .name-section,
+      .cta-section { padding: 64px 20px; }
+
+      .intro-h  { font-size: clamp(28px, 7vw, 40px); }
+      .design-h { font-size: clamp(28px, 7.5vw, 42px); }
+      .app-h    { font-size: clamp(26px, 7vw, 38px); }
+      .story-h  { font-size: clamp(26px, 7vw, 38px); }
+      .name-word { font-size: clamp(52px, 13vw, 80px); }
+      .cta-h    { font-size: clamp(32px, 8vw, 48px); }
+
+      .stat     { padding: 28px 20px; }
+      .story-body { font-size: 17px; }
+      .app-description { font-size: 15px; }
+      .intro-body { font-size: 15px; }
     }
   </style>
 </head>
