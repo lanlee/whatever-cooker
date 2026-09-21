@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  whatever cooker sitemap
-  Only URLs that return HTTP 200 may be listed here.
-
-  When a blog post is published, append a <url> entry:
-
-    <url>
-      <loc>https://whatevercooker.com/blog/<slug>/</loc>
-      <lastmod>YYYY-MM-DD</lastmod>
-    </url>
-
-  ...and make sure the post is linked from the homepage (or a blog index)
-  so crawlers can reach it. A URL in the sitemap that returns 404 will
-  cause Search Console to report errors for the whole sitemap.
--->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://whatevercooker.com/</loc>
     <lastmod>2026-09-21</lastmod>
   </url>
-</urlset>
+<url><loc>https://whatevercooker.com/blog/fresh-cooked-meals</loc></url></urlset>

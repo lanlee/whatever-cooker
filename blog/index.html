@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog - whatever cooker</title>
+<meta name="description" content="Recipes, guides and stories from whatever cooker." />
+<link rel="canonical" href="https://whatevercooker.com/blog" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/blog/blog.css" />
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/">whatever cooker</a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/blog">Blog</a></li>
+  </ul>
+</nav>
+<main class="blog-main">
+  <header class="blog-head">
+    <p class="label">Journal</p>
+    <h1 class="blog-title">Blog</h1>
+    <p class="blog-sub">Recipes, guides and stories from the whatever cooker kitchen.</p>
+  </header>
+  <ul class="post-list" id="post-list"></ul>
+</main>
+<footer class="site-footer">
+  <span>&copy; whatever cooker</span>
+  <a href="/">Home</a>
+</footer>
+<script src="/blog/posts.js"></script>
+<script>
+(function(){
+  var list = document.getElementById('post-list');
+  (window.BLOG_POSTS || []).forEach(function(p){
+    var li = document.createElement('li');
+    li.className = 'post-item';
+    var a = document.createElement('a');
+    a.className = 'post-link';
+    a.href = '/blog/' + p.slug;
+    var t = document.createElement('h2');
+    t.className = 'post-title';
+    t.textContent = p.title;
+    var d = document.createElement('p');
+    d.className = 'post-meta';
+    d.textContent = p.date + ' \u00b7 ' + p.author;
+    var e = document.createElement('p');
+    e.className = 'post-excerpt';
+    e.textContent = p.excerpt || '';
+    a.appendChild(t); a.appendChild(d); a.appendChild(e);
+    li.appendChild(a);
+    list.appendChild(li);
+  });
+})();
+</script>
+</body>
+</html>
