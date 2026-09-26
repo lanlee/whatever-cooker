@@ -1,0 +1,10 @@
+# hanchengmaterial.com
+
+> Public pages and articles on this website.
+
+## Public pages
+
+- [Home](https://hanchengmaterial.com/)
+- [blog](https://hanchengmaterial.com/blog)
+- [fresh cooked meals](https://hanchengmaterial.com/blog/fresh-cooked-meals)
+- [ten minute meals](https://hanchengmaterial.com/blog/ten-minute-meals)
