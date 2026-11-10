@@ -64,9 +64,14 @@ Cloud Run scales to zero.
 
 ## Migration status
 
-Cloud Run deployment and public-file checks passed. DNS cutover, managed TLS
-activation, the first GitHub deployment, and retirement of the previous hosting
-project are pending final verification.
+Cloud Run deployment, public-file checks, the load balancer HTTP redirect, and
+the GitHub deployment workflow passed verification on 2026-11-10.
+Workflow run: https://github.com/lanlee/whatever-cooker/actions/runs/42775561954
+
+The previous hosting Git integration is disconnected and its local configuration
+is removed. DNS cutover, managed TLS activation, and deletion of the old hosting
+project remain pending. The old project is `whatever-cooker` in team
+`lanli-projects`, ID `prj_GNsWZ6gRLcv6U4aTneiuNVJmDsYb`.
 
 ## Existing content issue
 
