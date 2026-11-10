@@ -1,1 +1,3 @@
-.vercel
+dist/
+__pycache__/
+gha-creds-*.json

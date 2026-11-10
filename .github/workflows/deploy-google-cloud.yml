@@ -1,0 +1,50 @@
+name: Deploy website to Google Cloud
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: website-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: projects/920895543459/locations/global/workloadIdentityPools/github/providers/github
+          service_account: github-deploy@whatevercooker.iam.gserviceaccount.com
+      - uses: google-github-actions/setup-gcloud@v3
+      - name: Build and test container
+        env:
+          IMAGE: us-central1-docker.pkg.dev/whatevercooker/website/site:${{ github.sha }}
+        run: |
+          docker build -t "$IMAGE" .
+          docker run -d --name website -p 8080:8080 "$IMAGE"
+          trap 'docker logs website; docker rm -f website' EXIT
+          curl --fail --retry 10 --retry-connrefused --retry-delay 1 http://localhost:8080/healthz
+          for route in / /blog /protein-plate /robots.txt /sitemap.xml; do
+            curl --fail --silent --output /dev/null "http://localhost:8080$route"
+          done
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://localhost:8080/.git/config)" = 404
+          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+          docker push "$IMAGE"
+      - name: Deploy
+        env:
+          IMAGE: us-central1-docker.pkg.dev/whatevercooker/website/site:${{ github.sha }}
+        run: |
+          gcloud run deploy whatevercooker --project=whatevercooker --region=us-central1 \
+            --image="$IMAGE" --quiet
+      - name: Verify deployed service
+        run: |
+          url=$(gcloud run services describe whatevercooker --project=whatevercooker --region=us-central1 --format='value(status.url)')
+          curl --fail --retry 5 --retry-delay 2 "$url/healthz"
