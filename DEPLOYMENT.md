@@ -33,7 +33,8 @@ directories to the staging list when necessary.
 A global external Application Load Balancer routes to the Cloud Run service
 through the `website-neg` serverless NEG and `website-backend` backend service.
 The reserved IPv4 address `website-ip` is **35.186.244.47**.
-`website-https` serves port 443 with Google-managed certificate `website-cert`.
+`website-https` uses Google-managed certificate `website-cert-cutover`
+(the initial `website-cert` request is temporarily retained during provisioning).
 `website-http` redirects port 80 to HTTPS via `http-redirect.yaml`.
 The `website-tls` policy requires TLS 1.2 or newer.
 
@@ -44,15 +45,14 @@ GoDaddy records (TTL 600 seconds):
 | A | @ | 35.186.244.47 |
 | CNAME | www | whatevercooker.com |
 
-Replace the previous hosting A and CNAME values. Preserve email/MX, TXT and
-other unrelated records. The certificate cannot become active until both
-names resolve to this load balancer. Do not remove the previous hosting project
-until domain routing and certificate status have been verified.
+These DNS records are verified at Google and Cloudflare public resolvers.
+Preserve email/MX, TXT and other unrelated records. Google-managed certificate
+issuance and propagation are still pending; the direct Cloud Run URL works.
 
 Check status:
 
 ```sh
-gcloud compute ssl-certificates describe website-cert --global --project=whatevercooker
+gcloud compute ssl-certificates describe website-cert-cutover --global --project=whatevercooker
 gcloud run services describe whatevercooker --region=us-central1 --project=whatevercooker
 curl -I https://whatevercooker.com/
 curl -I https://www.whatevercooker.com/
@@ -68,10 +68,14 @@ Cloud Run deployment, public-file checks, the load balancer HTTP redirect, and
 the GitHub deployment workflow passed verification on 2026-11-10.
 Workflow run: https://github.com/lanlee/whatever-cooker/actions/runs/42775561954
 
-The previous hosting Git integration is disconnected and its local configuration
-is removed. DNS cutover, managed TLS activation, and deletion of the old hosting
-project remain pending. The old project is `whatever-cooker` in team
-`lanli-projects`, ID `prj_GNsWZ6gRLcv6U4aTneiuNVJmDsYb`.
+DNS cutover is verified. The previous hosting project and its deployments were
+deleted; the project API confirms 404. Its Git integration and local configuration
+are removed. Automatic deployment to Google Cloud is enabled for pushes to
+`main` and has passed end-to-end verification.
+
+The remaining step is Google-managed TLS activation and verification of the
+custom-domain HTTPS pages. At the latest check, the certificate domain status
+was ACTIVE for `www.whatevercooker.com` and PROVISIONING for `whatevercooker.com`.
 
 ## Existing content issue
 
